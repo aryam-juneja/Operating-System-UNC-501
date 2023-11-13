@@ -1,20 +1,11 @@
 #include<stdio.h>
 
-int main() {
-    int block = 3;
-    int no_of_files = 2;
-    // printf("Type the no. of blocks:\n");
-    // scanf("%d", &block);
-    // printf("%d",block);
+// first fit
+void first_fit(int block, int no_of_files, int mem[], int files[]){
+    printf("First Fit\n");
 
-    int mem[] = {5,2,7};
-    int files[] = {1,4};
     int idx[no_of_files];
-    int size = sizeof(mem)/sizeof(mem[0]);
-   
-    // printf("%d",size);
 
-    // first fit
     for (int i = 0; i<no_of_files; i++) {
         for(int j = 0; j<block; j++) {
             if (mem[j] > files[i]) {
@@ -24,45 +15,93 @@ int main() {
             }
         }
     }
-
-
+    printf("Index --> ");
     for (int i = 0; i<no_of_files; i++) {
         printf("%d  ",idx[i]);
     }
     printf("\n");
+    printf("Free space --> ");
     for (int i = 0; i<block; i++) {
         printf("%d  ",mem[i]);
     }
     printf("\n");
+}
 
-    int membf[] = {5,2,7};
-    int bf_idx[no_of_files];
+// best fit
+void best_fit(int block, int no_of_files, int mem[], int files[]) {
+    printf("Best Fit\n");
 
-    // best fit
-    for (int i = 0; i<no_of_files; i++) {
-        int diff = 0;
-        int best_idx = -1;
-        for(int j = 0; j<block; j++) {
-            int temp = membf[j] - files[i];
-            if (temp<diff) {
-                diff = temp;
-                best_idx = j;
+    int idx[no_of_files];
+
+    for (int i=0; i<no_of_files; i++) {
+        int diff = 999;
+        int index = -1;
+        for (int j=0; j<block; j++) {
+            if (mem[j]-files[i] < diff && mem[j]-files[i] >= 0) {
+                diff = mem[j] - files[i];
+                index = j;
             }
-            membf[best_idx] -= files[i]; 
-            bf_idx[i] = best_idx=1;
         }
+        idx[i] = index+1;
+        mem[index] -= files[i];
     }
-
+    printf("Index --> ");
     for (int i = 0; i<no_of_files; i++) {
-        printf("%d  ",bf_idx[i]);
+        printf("%d  ",idx[i]);
     }
     printf("\n");
+    printf("Free space --> ");
     for (int i = 0; i<block; i++) {
-        printf("%d  ",membf[i]);
+        printf("%d  ",mem[i]);
     }
+    printf("\n");
+}
 
-    // for (int i = 0; i < size; i++) {
+// worst fit
+void worst_fit(int block, int no_of_files, int mem[], int files[]) {
+    printf("Worst Fit\n");
 
-    // }
+    int idx[no_of_files];
+
+    for (int i=0; i<no_of_files; i++) {
+        int diff = -1;
+        int index = -1;
+        for (int j=0; j<block; j++) {
+            if (mem[j]-files[i] > diff && mem[j]-files[i] >= 0) {
+                diff = mem[j] - files[i];
+                index = j;
+            }
+        }
+        idx[i] = index+1;
+        mem[index] -= files[i];
+    }
+    printf("Index --> ");
+    for (int i = 0; i<no_of_files; i++) {
+        printf("%d  ",idx[i]);
+    }
+    printf("\n");
+    printf("Free space --> ");
+    for (int i = 0; i<block; i++) {
+        printf("%d  ",mem[i]);
+    }
+    printf("\n");
+}
+
+void show(int n[]) {
+    n = 9;
+    printf("%d",n);
+}
+
+// driver code
+int main() {
+    int block = 3;
+    int no_of_files = 2;
+
+    int mem[] = {5,2,7};
+    int files[] = {1,4};
+
+    // first_fit(block, no_of_files, mem, files);
+    // best_fit(block, no_of_files, mem, files);
+    // worst_fit(block, no_of_files, mem, files);
     return 0;
 }
